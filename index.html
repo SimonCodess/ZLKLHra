@@ -16,8 +16,15 @@
     </div>
     <canvas id="gameCanvas"></canvas>
 
-    <button id="restartButton" style="display: none">Restart</button>
-    <button id="rollButton" style="display: none">Roll for Reward</button>
+    <button id="restartButton" style="display: none">ZKUS ZNOVU!</button>
+    <div id="rewardScreen">
+      <p>VYHRÁL/A JSTE. VYBERTE SI ODMĚNU:</p>
+      <div id="cards">
+        <div class="card" data-reward="0">?</div>
+        <div class="card" data-reward="1">?</div>
+        <div class="card" data-reward="2">?</div>
+      </div>
+    </div>
     <div id="garage"></div>
     <div id="watermark">
       <img src="assets/smn.png" alt="Powered By Simon Veprek." />

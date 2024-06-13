@@ -14,22 +14,26 @@ if ("serviceWorker" in navigator) {
   });
 }
 
+const rewards = ["Ponožky", "Tužka", "Sešit", "Samolepka", "Odznáček"];
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const startButton = document.getElementById("startButton");
-
 const restartButton = document.getElementById("restartButton");
 const rollButton = document.getElementById("rollButton");
 const gameLogo = document.getElementById("gameLogo");
 const garage = document.getElementById("garage");
 const alertDiv = document.getElementById("alertDiv");
 const watermark = document.getElementById("watermark");
+const rewardScreen = document.getElementById("rewardScreen");
 
 let groundImg = new Image();
 groundImg.src = "assets/ZLKLGround.png"; // Path to the ground sprite
+
+const skullImg = new Image();
+skullImg.src = "assets/lebka.png";
 
 let character = {
   img: new Image(),
@@ -213,24 +217,18 @@ function drawCharacter() {
     );
   }
   ctx.restore();
+  if (gameOver) {
+    ctx.drawImage(
+      skullImg,
+      character.x + character.width / 2 - skullImg.width / 2,
+      character.y - skullImg.height - 10
+    );
+  }
 
   // Display score
   ctx.fillStyle = "white";
   ctx.font = "30px Arial";
   ctx.fillText(score + "/20", 20, 30);
-
-  // Display game over or win message
-  if (gameOver) {
-    ctx.fillStyle = "red";
-    ctx.font = "40px Arial";
-    ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
-  }
-
-  if (win) {
-    ctx.fillStyle = "green";
-    ctx.font = "40px Arial";
-    ctx.fillText("You Win!", canvas.width / 2 - 100, canvas.height / 2);
-  }
 }
 
 function flashCharacter() {
@@ -374,8 +372,8 @@ function changeScene(scene) {
         gameLogo.style.display = "block";
         canvas.style.display = "none";
         restartButton.style.display = "none";
-        rollButton.style.display = "none";
         watermark.style.display = "flex";
+        rewardScreen.style.display = "none";
 
         hideButtons();
         break;
@@ -384,8 +382,8 @@ function changeScene(scene) {
         gameLogo.style.display = "none";
         canvas.style.display = "block";
         restartButton.style.display = "none";
-        rollButton.style.display = "none";
         watermark.style.display = "none";
+        rewardScreen.style.display = "none";
 
         gameOver = false;
         win = false;
@@ -403,8 +401,8 @@ function changeScene(scene) {
         gameLogo.style.display = "none";
         canvas.style.display = "none";
         restartButton.style.display = "block";
-        rollButton.style.display = "none";
         watermark.style.display = "flex";
+        rewardScreen.style.display = "none";
 
         hideButtons();
         break;
@@ -413,8 +411,8 @@ function changeScene(scene) {
         gameLogo.style.display = "none";
         canvas.style.display = "none";
         restartButton.style.display = "none";
-        rollButton.style.display = "block";
         watermark.style.display = "flex";
+        rewardScreen.style.display = "flex";
 
         hideButtons();
         break;
@@ -456,7 +454,24 @@ restartButton.addEventListener("click", () => {
   changeScene("game");
 });
 
-rollButton.addEventListener("click", () => {
-  alert("You rolled for a reward!");
-  changeScene("start");
+function revealReward(card) {
+  document.querySelectorAll("#rewardScreen .card").forEach((c) => {
+    c.style.pointerEvents = "none";
+  });
+
+  const rewardIndex = parseInt(card.dataset.reward, 10);
+  const reward = rewards[rewardIndex];
+  card.innerText = reward;
+
+  card.style.fontSize = "1.5rem";
+
+  setTimeout(() => {
+    location.reload();
+  }, 2000);
+}
+
+document.querySelectorAll("#rewardScreen .card").forEach((card) => {
+  card.addEventListener("click", () => {
+    revealReward(card);
+  });
 });
