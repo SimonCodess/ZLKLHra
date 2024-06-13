@@ -8,6 +8,7 @@ const restartButton = document.getElementById("restartButton");
 const rollButton = document.getElementById("rollButton");
 const gameLogo = document.getElementById("gameLogo");
 const garage = document.getElementById("garage");
+const alertDiv = document.getElementById("alertDiv");
 
 let groundImg = new Image();
 groundImg.src = "assets/ZLKLGround.png"; // Path to the ground sprite
@@ -298,11 +299,6 @@ groundImg.onload = function () {
   changeScene("start");
 };
 
-groundImg.onload = function () {
-  resize();
-  changeScene("start");
-};
-
 // Touch controls for mobile devices
 const leftButton = document.createElement("button");
 leftButton.classList.add("leftButton");
@@ -324,6 +320,7 @@ function showButtons() {
   leftButton.style.display = "flex";
   rightButton.style.display = "flex";
 }
+
 function hideButtons() {
   leftButton.style.display = "none";
   rightButton.style.display = "none";
@@ -338,14 +335,16 @@ function detectDevice() {
   ) {
     return true; // Mobile device or tablet detected
   }
-  return false;
+
+  if (/iPhone|Android/.test(userAgent) && window.innerWidth <= 480) {
+    alertDiv.style.display = "flex"; // Show alert if phone is detected
+    return false; // Phone detected
+  }
+
+  return false; // Not a mobile device or tablet
 }
-const isMobileDevice = detectDevice();
-// Background music
-let backgroundMusic = new Audio("assets/ZLKLHudba.wav");
-backgroundMusic.loop = true;
-backgroundMusic.volume = 0.2; // Set volume to low
-backgroundMusic.play();
+
+const isMobileDevice = detectDevice(); // Detect device once and store the result
 
 function changeScene(scene) {
   garageDown(() => {
