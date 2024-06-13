@@ -333,20 +333,23 @@ function detectDevice() {
     /android/i.test(userAgent) ||
     (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)
   ) {
-    return true; // Mobile device or tablet detected
+    return "mobile"; // Mobile device or tablet detected
   }
 
-  if (/iPhone|Android/.test(userAgent) && window.innerWidth <= 480) {
-    alertDiv.style.display = "flex"; // Show alert if phone is detected
-    return false; // Phone detected
+  if (/iPhone|Android/.test(userAgent)) {
+    return "phone"; // Phone detected
   }
 
-  return false; // Not a mobile device or tablet
+  return "desktop"; // Desktop or other device detected
 }
-
-const isMobileDevice = detectDevice(); // Detect device once and store the result
+const deviceType = detectDevice();
 
 function changeScene(scene) {
+  if (deviceType === "phone") {
+    alertDiv.style.display = "flex"; // Show alert if phone is detected
+    return;
+  }
+
   garageDown(() => {
     switch (scene) {
       case "start":
@@ -370,7 +373,7 @@ function changeScene(scene) {
         resize();
         updateCharacterPosition();
         spawnObjectsContinuously();
-        if (isMobileDevice) {
+        if (deviceType === "mobile") {
           showButtons();
         }
         break;
