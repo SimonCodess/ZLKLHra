@@ -49,12 +49,7 @@ canvas {
   filter: invert(1);
   display: none;
 }
-@media only screen and (max-width: 768px) {
-  .leftButton,
-  .rightButton {
-    display: block;
-  }
-}
+
 #startScreen {
   margin-top: 5%;
   display: flex;

@@ -25,6 +25,7 @@ let character = {
   jumpStrength: 15, // Increased jump strength
   gravity: 0.5,
   onGround: true,
+  opacity: 1.0, // Default opacity
 };
 
 character.img.src = "assets/ZLKLPostavička.png";
@@ -126,6 +127,7 @@ function updateObjects() {
 
     if (objectsArray[i].isCaught(character)) {
       score++;
+      flashCharacter(); // Flash the character when a falling object is caught
 
       objectsArray.splice(i, 1);
       i--;
@@ -172,6 +174,7 @@ function drawCharacter() {
   updateObjects();
 
   ctx.save();
+  ctx.globalAlpha = character.opacity; // Set the character's opacity
   if (character.direction === "left") {
     ctx.scale(-1, 1);
     ctx.drawImage(
@@ -195,7 +198,7 @@ function drawCharacter() {
   // Display score
   ctx.fillStyle = "white";
   ctx.font = "30px Arial";
-  ctx.fillText("Váš počet bodů: " + score, 20, 30);
+  ctx.fillText(score + "/20", 20, 30);
 
   // Display game over or win message
   if (gameOver) {
@@ -209,6 +212,13 @@ function drawCharacter() {
     ctx.font = "40px Arial";
     ctx.fillText("You Win!", canvas.width / 2 - 100, canvas.height / 2);
   }
+}
+
+function flashCharacter() {
+  character.opacity = 0.5; // Lower the opacity
+  setTimeout(() => {
+    character.opacity = 1.0; // Restore the original opacity after 200ms
+  }, 200);
 }
 
 function updateCharacterPosition() {
@@ -288,6 +298,11 @@ groundImg.onload = function () {
   changeScene("start");
 };
 
+groundImg.onload = function () {
+  resize();
+  changeScene("start");
+};
+
 // Touch controls for mobile devices
 const leftButton = document.createElement("button");
 leftButton.classList.add("leftButton");
@@ -305,6 +320,27 @@ rightButton.addEventListener("touchend", () => (keys["right"] = false));
 canvas.addEventListener("touchstart", () => (keys["jump"] = true));
 canvas.addEventListener("touchend", () => (keys["jump"] = false));
 
+function showButtons() {
+  leftButton.style.display = "flex";
+  rightButton.style.display = "flex";
+}
+function hideButtons() {
+  leftButton.style.display = "none";
+  rightButton.style.display = "none";
+}
+
+function detectDevice() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  if (
+    /android/i.test(userAgent) ||
+    (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)
+  ) {
+    return true; // Mobile device or tablet detected
+  }
+  return false;
+}
+const isMobileDevice = detectDevice();
 // Background music
 let backgroundMusic = new Audio("assets/ZLKLHudba.wav");
 backgroundMusic.loop = true;
@@ -315,13 +351,16 @@ function changeScene(scene) {
   garageDown(() => {
     switch (scene) {
       case "start":
-        startScreen.style.display = "flex";
+        startButton.style.display = "block";
+        gameLogo.style.display = "block";
         canvas.style.display = "none";
         restartButton.style.display = "none";
         rollButton.style.display = "none";
+        hideButtons();
         break;
       case "game":
-        startScreen.style.display = "none";
+        startButton.style.display = "none";
+        gameLogo.style.display = "none";
         canvas.style.display = "block";
         restartButton.style.display = "none";
         rollButton.style.display = "none";
@@ -332,14 +371,25 @@ function changeScene(scene) {
         resize();
         updateCharacterPosition();
         spawnObjectsContinuously();
+        if (isMobileDevice) {
+          showButtons();
+        }
         break;
       case "game_over":
+        startButton.style.display = "none";
+        gameLogo.style.display = "none";
         canvas.style.display = "none";
         restartButton.style.display = "block";
+        rollButton.style.display = "none";
+        hideButtons();
         break;
       case "win":
+        startButton.style.display = "none";
+        gameLogo.style.display = "none";
         canvas.style.display = "none";
+        restartButton.style.display = "none";
         rollButton.style.display = "block";
+        hideButtons();
         break;
     }
     garageUp();
