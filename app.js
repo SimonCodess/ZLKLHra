@@ -345,11 +345,6 @@ function detectDevice() {
 const deviceType = detectDevice();
 
 function changeScene(scene) {
-  if (deviceType === "phone") {
-    alert("Tato hra není podporována na telefonech");
-    return;
-  }
-
   garageDown(() => {
     switch (scene) {
       case "start":
