@@ -316,16 +316,6 @@ rightButton.addEventListener("touchend", () => (keys["right"] = false));
 canvas.addEventListener("touchstart", () => (keys["jump"] = true));
 canvas.addEventListener("touchend", () => (keys["jump"] = false));
 
-function showButtons() {
-  leftButton.style.display = "flex";
-  rightButton.style.display = "flex";
-}
-
-function hideButtons() {
-  leftButton.style.display = "none";
-  rightButton.style.display = "none";
-}
-
 function detectDevice() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -336,13 +326,27 @@ function detectDevice() {
     return "mobile"; // Mobile device or tablet detected
   }
 
-  if (/iPhone|Android/.test(userAgent)) {
+  if (/iPhone|Android/.test(userAgent) && window.innerWidth <= 480) {
     return "phone"; // Phone detected
   }
 
   return "desktop"; // Desktop or other device detected
 }
-const deviceType = detectDevice();
+
+const deviceType = detectDevice(); // Detect device once and store the result
+
+function showButtons() {
+  if (deviceType === "mobile" || deviceType === "phone") {
+    leftButton.style.display = "flex";
+    rightButton.style.display = "flex";
+  } else {
+    hideButtons();
+  }
+}
+function hideButtons() {
+  leftButton.style.display = "none";
+  rightButton.style.display = "none";
+}
 
 function changeScene(scene) {
   garageDown(() => {
