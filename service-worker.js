@@ -3,7 +3,6 @@ self.addEventListener("install", (event) => {
     caches.open("game-cache").then((cache) => {
       return cache.addAll([
         "/",
-        "/index.html",
         "/manifest.json",
         "/assets/garage.png",
         "/assets/icon-192x192.png",
@@ -19,8 +18,6 @@ self.addEventListener("install", (event) => {
         "/assets/ZLKLHraPozadí.png",
         "/assets/ZLKLHudba.wav",
         "/assets/ZLKLPostavička.png",
-        "/app.js",
-        "/style.css",
       ]);
     })
   );
