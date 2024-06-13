@@ -346,7 +346,7 @@ const deviceType = detectDevice();
 
 function changeScene(scene) {
   if (deviceType === "phone") {
-    alertDiv.style.display = "flex"; // Show alert if phone is detected
+    alert("Tato hra není podporována na telefonech");
     return;
   }
 
