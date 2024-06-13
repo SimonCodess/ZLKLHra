@@ -1,14 +1,32 @@
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log(
+          "Service Worker registered with scope:",
+          registration.scope
+        );
+      })
+      .catch((error) => {
+        console.log("Service Worker registration failed:", error);
+      });
+  });
+}
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const startButton = document.getElementById("startButton");
+
 const restartButton = document.getElementById("restartButton");
 const rollButton = document.getElementById("rollButton");
 const gameLogo = document.getElementById("gameLogo");
 const garage = document.getElementById("garage");
 const alertDiv = document.getElementById("alertDiv");
+const watermark = document.getElementById("watermark");
 
 let groundImg = new Image();
 groundImg.src = "assets/ZLKLGround.png"; // Path to the ground sprite
@@ -357,6 +375,8 @@ function changeScene(scene) {
         canvas.style.display = "none";
         restartButton.style.display = "none";
         rollButton.style.display = "none";
+        watermark.style.display = "flex";
+
         hideButtons();
         break;
       case "game":
@@ -365,6 +385,8 @@ function changeScene(scene) {
         canvas.style.display = "block";
         restartButton.style.display = "none";
         rollButton.style.display = "none";
+        watermark.style.display = "none";
+
         gameOver = false;
         win = false;
         score = 0;
@@ -382,6 +404,8 @@ function changeScene(scene) {
         canvas.style.display = "none";
         restartButton.style.display = "block";
         rollButton.style.display = "none";
+        watermark.style.display = "flex";
+
         hideButtons();
         break;
       case "win":
@@ -390,6 +414,8 @@ function changeScene(scene) {
         canvas.style.display = "none";
         restartButton.style.display = "none";
         rollButton.style.display = "block";
+        watermark.style.display = "flex";
+
         hideButtons();
         break;
     }
