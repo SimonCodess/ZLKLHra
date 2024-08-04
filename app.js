@@ -131,7 +131,7 @@ function spawnObject() {
     const width = 70;
     const height = 70;
     const speed = 1.7 + score * 0.01; // Increase speed slightly with score
-    const imageSrc = "assets/nut.png"; // Ensure it's a nut
+    const imageSrc = "assets/soucastka1pixel.png"; // Ensure it's a nut
     objectsArray.push(new FallingObject(x, y, width, height, speed, imageSrc));
   }
 }
