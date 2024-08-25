@@ -125,13 +125,16 @@ function handleParticles() {
 
 function spawnObject() {
   if (objectsArray.length < 1) {
-    // Limit to one object at a time
     const x = Math.random() * (canvas.width - 60) + 30; // Limit spawn range to central area
     const y = 0;
     const width = 70;
     const height = 70;
     const speed = 1.7 + score * 0.01; // Increase speed slightly with score
-    const imageSrc = "assets/soucastka1pixel.png"; // Ensure it's a nut
+
+    // Randomly choose between the two images
+    const images = ["assets/soucastka1pixel.png", "assets/soucastka2pixel.png"];
+    const imageSrc = images[Math.floor(Math.random() * images.length)];
+
     objectsArray.push(new FallingObject(x, y, width, height, speed, imageSrc));
   }
 }
@@ -363,7 +366,12 @@ function hideButtons() {
   leftButton.style.display = "none";
   rightButton.style.display = "none";
 }
-
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
 function changeScene(scene) {
   garageDown(() => {
     switch (scene) {
@@ -415,6 +423,15 @@ function changeScene(scene) {
         rewardScreen.style.display = "flex";
 
         hideButtons();
+        shuffleArray(rewards);
+
+        document
+          .querySelectorAll("#rewardScreen .card")
+          .forEach((card, index) => {
+            card.dataset.reward = index;
+            card.innerText = "?";
+            card.style.pointerEvents = "auto";
+          });
         break;
     }
     garageUp();
