@@ -25,3 +25,5 @@ const rewards = ["Ponožky", "Pero", "Sešit", "Samolepka", "Odznáček"];
 ❌  ```const rewards = ["Ponožky, "Pero", "Sešit", "Samolepka", "Odznáček"];``` (Chybí uvozovky)
 
 ❌  ```const rewards = ["Ponožky" "Pero", "Sešit", "Samolepka", "Odznáček"];``` (Chybí čárka)
+
+Toto repo je hostováno na netlify, tudíž všechny změny se skoro instantně propíší.
