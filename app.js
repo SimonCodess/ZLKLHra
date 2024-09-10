@@ -14,7 +14,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-const rewards = ["Ponožky", "Tužka", "Sešit", "Samolepka", "Odznáček"];
+const rewards = ["Ponožky", "Tužka", "Přívěsek", "Balónek", "Opalovací krém"];
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
